@@ -1,12 +1,4 @@
-#Algoritmo que muestra los multiplos del 3 o del 5 
-x = 0
-result = 0
-puts "Los siguientes números son losmultiplos de 3 y 5 :"
-for i in 1...1000
-	x += 1
-	if x%3 == 0 || x%5 == 0
-		puts  "#{x}"
-		result += x
-	end
-end
- print "La suma de todos los multiplos de 3 o 5 por debajo de 1000 es de: #{result}"
+puts "Los multiplos de 3 y 5 son :"
+puts (1...1000).to_a.select{|x| x if (x % 3 == 0 || x % 5 == 0) }
+puts "La suma de los multiplos de 3 y 5 es :"
+puts (1...1000).to_a.select{|x| x if (x % 3 == 0 || x % 5 == 0) }.sum
