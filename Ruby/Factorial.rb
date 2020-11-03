@@ -1,16 +1,9 @@
-puts "¡Porfavor digite el número al cuál quiere calcularle el valor factorial!"
+puts "¡Ingrese el valor al cual le quiere sacar el factorial!"
 
-i = 0
-fac = 1
-n = gets.chomp().to_i
-
-if n == 0
-    puts "El valor del número factorial es igual a 1"
+x = gets.chomp.to_i
+if x == 0
+    "Valor factorial igual a 0"
 else
-    while i<n 
-        i += 1
-        fac *= i
-        
-    end
-    puts "El valor factorial de #{n} es igual a : #{fac}"
+    puts "El valor factorial es:"
+    puts (1).upto(x).reduce(:*)
 end
