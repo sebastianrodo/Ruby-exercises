@@ -1,9 +1,9 @@
-puts "¡Ingrese el valor al cual le quiere sacar el factorial!"
+puts "Enter the value for which you want to calculate the factorial!"
 
-x = gets.chomp.to_i
-if x == 0
-    "Valor factorial igual a 0"
-else
-    puts "El valor factorial es:"
-    puts (1).upto(x).reduce(:*)
+number = gets.chomp.to_i
+
+def factorial(number)
+  number == 0 ? "1" : (1..number).reduce(:*).to_s
 end
+
+puts "The factorial value is : " + factorial(number)
