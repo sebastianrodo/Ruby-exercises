@@ -1,15 +1,17 @@
 
   def fibonacci2
-    MAX_VALUE = 4000000
+    @MAX_VALUE = 4000000
+    
 
-    (1..MAX_VALUE).each_with_object([1,2]) do |num, acum|
-      return acum if acum[acum.size - 1] + acum[acum.size - 2] > MAX_VALUE 
+    (1..@MAX_VALUE).each_with_object([1,2]) do |num, acum|
+      final_value = acum[acum.size - 1] + acum[acum.size - 2]
+      return acum if final_value > @MAX_VALUE 
 
-      acum << acum[acum.size - 1] + acum[acum.size - 2]
+      acum << final_value
     end
   end
 
-  puts fibonacci2
+  puts "The Fibonacci sequence is: #{fibonacci2}"
 
 =begin
   puts "The Fibonacci sequence is : "
@@ -49,5 +51,3 @@ def fibonacci(max_value)
   fibonacci(4000000) {|x| puts x }
 =end
  
-   
-   
