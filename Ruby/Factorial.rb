@@ -7,3 +7,4 @@ def factorial(number)
 end
 
 puts "The factorial value is : " + factorial(number)
+
