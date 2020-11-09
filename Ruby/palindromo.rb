@@ -5,7 +5,6 @@ def largest_palindrome
     (100..999).each do |y| 
       multiplication = x * y;
       array << multiplication if multiplication.to_s === multiplication.to_s.reverse
-      
     end
       
   end.max
