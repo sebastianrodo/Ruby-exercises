@@ -1,17 +1,13 @@
-
 def largest_palindrome
-
   (100..999).each_with_object([]) do |x, array|
     (100..999).each do |y| 
       multiplication = x * y;
       array << multiplication if multiplication.to_s === multiplication.to_s.reverse
     end
-      
   end.max
-
 end
 
-puts largest_palindrome
+puts "The largest palindrome is : #{largest_palindrome}"
 
 =begin
 def largest_palindrome
@@ -24,19 +20,7 @@ def largest_palindrome
     print "The largest palindrome is : #{array.max}"
 end
   
-    puts largest_palindrome
-    
-    
-  
-  y = []
-  (100..999).each do |x|
-      (100..999).each do |i|
-          a = x * i 
-          if ( a.to_s === a.to_s.reverse)
-              y.push(a)
-          end
-      end
-  end 
-  puts y.max
+puts largest_palindrome
+
 =end
   
