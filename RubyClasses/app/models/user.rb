@@ -1,4 +1,4 @@
-# require 'pry'
+require 'pry'
 require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/enumerable'
 
@@ -36,18 +36,29 @@ class User
     def find(id)
       @@users.find { |user| user.id == id }.clone
     end
+
+    def clear_id
+      @@id_auto_increment = 0
+    end
   end
 
   def save
+    return false if User.find(id)
+
     return false unless valid?
-    if User.find(id)
-      p 'actualizo'
-      @@users[id - 1] = self
-    else
-      p 'guardo'
-      self.id = @@id_auto_increment += 1
-      @@users << self.clone
-    end
+
+    self.id = @@id_auto_increment += 1
+    @@users << self.clone
+
+    true
+  end
+
+  def update
+    return false unless User.find(id)
+
+    return false unless valid?
+
+    @@users[id - 1] = self
 
     true
   end
@@ -92,10 +103,11 @@ class User
 
   def valid_with_condition?(condition, field, message)
     if condition
-      x = self.clone
-      x.errors.merge!({ field => [message] }) && false
+      self.errors = self.errors.merge({ field => [message] })
+      false
     else
-      @errors.delete(field) && true
+      self.errors.delete(field)
+      true
     end
   end
 end

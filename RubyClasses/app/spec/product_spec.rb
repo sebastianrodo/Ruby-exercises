@@ -48,3 +48,31 @@ RSpec.describe 'Product' do
     end
   end
 end
+
+
+
+        # it { expect(subject.first_name).to eq('Sebas') }
+        # it { expect(subject.last_name).to eq('Rodriguez') }
+        # it { expect(subject.email).to eq('seb@gmail.com') }
+        # it { expect(subject.age).to eq(18) }
+        # it { expect(subject.address).to eq('calle 21') }
+
+
+
+        #expect(User).to receive(:new).with(attributes).and_call_original
+        #expect_any_instance_of(User).to receive(:save).and_call_original
+
+
+
+        # def save
+        #   return false unless valid?
+
+        #   if User.find(id)
+        #     @@users[id - 1] = self
+        #   else
+        #     self.id = @@id_auto_increment += 1
+        #     @@users << self.clone
+        #   end
+
+        #   true
+        # end
