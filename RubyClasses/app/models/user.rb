@@ -1,15 +1,13 @@
 require 'pry'
 require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/enumerable'
-require_relative './concerns/has_validation'
+require_relative './Base'
+#require_relative './concerns/has_validation'
 
-class User
-  include ::HasValidation
-
+class User < Base
+  #include ::HasValidation
   attr_accessor :id, :first_name, :last_name, :email, :age, :address, :errors
 
-  @@users = []
-  @@id_auto_increment = 0
   REQUIRED_KEYS = [:first_name, :last_name, :email]
   UNIQ_KEYS = [:email]
 
@@ -28,44 +26,5 @@ class User
       user.save
       user
     end
-
-    def count
-      @@users.count
-    end
-
-    def all
-      @@users
-    end
-
-    def find(id)
-      @@users.find { |user| user.id == id }.clone
-    end
-
-    def clear_id
-      @@id_auto_increment = 0
-    end
-  end
-
-  def save
-    return false unless valid?
-
-    if User.find(id)
-      @@users[id - 1] = self
-    else
-      self.id = @@id_auto_increment += 1
-      @@users << self
-    end
-
-    true
-  end
-
-  def update
-    return true if save
-
-    false
-  end
-
-  def delete
-    @@users.delete(self)
   end
 end
