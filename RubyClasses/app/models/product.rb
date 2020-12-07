@@ -1,11 +1,17 @@
+require 'pry'
 require 'active_support/core_ext/object/blank'
+require 'active_support/core_ext/enumerable'
+require_relative './concerns/has_validation'
 
 class Product
+  include ::HasValidation
+
   attr_accessor :id, :name, :value, :brand, :description, :quantity, :errors
 
   @@products = []
   @@id_auto_increment = 0
-  ATTR_KEYS = %i[name value brand].freeze
+  REQUIRED_KEYS = [:name, :value, :brand]
+  UNIQ_KEYS = [:name]
 
   def initialize(name: nil, value: nil, brand: nil, description: nil, quantity: nil)
     @name = name
@@ -16,19 +22,10 @@ class Product
     @errors = {}
   end
 
-  def valid?
-    return true unless validate_required?([name, value, brand])
-
-    false
-  end
-
-  def uniq?; end
-
   class << self
     def create(name: nil, value: nil, brand: nil, description: nil, quantity: nil)
       product = Product.new(name: name, value: value, brand: brand, description: description, quantity: quantity)
-      product.valid?
-      product.save?
+      product.save
       product
     end
 
@@ -41,37 +38,34 @@ class Product
     end
 
     def find(id)
-      @@products.find { |product| product.id == id }
+      @@products.find { |product| product.id == id }.clone
+    end
+
+    def clear_id
+      @@id_auto_increment = 0
     end
   end
 
-  def save?
-    return false if valid?
+  def save
+    return false unless valid?
 
-    if Product.find(id).nil?
-      self.id = @@id_auto_increment += 1
-      @@products.push(self)
-    else
+    if Product.find(id)
       @@products[id - 1] = self
+    else
+      self.id = @@id_auto_increment += 1
+      @@products << self
     end
+
     true
+  end
+
+  def update
+    return true if save
+
+    false
   end
 
   def delete
     @@products.delete(self)
   end
-
-  private
-
-  def validate_required?(field)
-    return false unless field.any? { |x| x.blank? }
-
-    field.each_with_index do |x, index|
-      index + 1
-      @errors.merge!({ ATTR_KEYS[index] => ['can’t be blank'] }) if x.blank?
-    end
-    true
-  end
-
-  def validate_uniq; end
 end
