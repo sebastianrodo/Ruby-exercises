@@ -29,37 +29,21 @@ RSpec.describe User do
       address: 'calle 21' }
   end
 
-  describe 'class methods' do
-    describe '#initialize' do
-      it_behaves_like 'initialize_method'
-    end
-
-    describe '#create' do
-      it_behaves_like 'create_method'
-    end
-
-    describe '#count' do
-      it_behaves_like 'count_method'
-    end
-
-    describe '#all' do
-      it_behaves_like 'all_method'
-    end
-
-    describe '#find' do
-      it_behaves_like 'find_method'
-    end
+  let(:with_blank_attributes) do
+    { first_name: 'Valeria', last_name: '', email: 'val35@gmail.com', age: 18,
+      address: 'calle 21' }
   end
 
+  let(:object_exist) do
+    { first_name: 'Sebas', last_name: 'Rodriguez', email: 'seb@gmail.com', age: 18,
+      address: 'calle 21' }
+  end
+
+  it_behaves_like 'ClassMethods'
+
+  it_behaves_like 'InstanceMethods'
+
   describe 'instance methods' do
-    describe '#save' do
-      it_behaves_like 'save_method'
-    end
-
-    describe '#delete' do
-      it_behaves_like 'delete_method'
-    end
-
     describe '#update' do
       subject(:update) { user.update }
 
@@ -107,21 +91,10 @@ RSpec.describe User do
     end
 
     describe '#valid?' do
-      let(:wrong_attributes) do
-        { first_name: 'Valeria', last_name: '', email: 'val35@gmail.com', age: 18,
-          address: 'calle 21' }
-      end
-
-      let(:object_exist) do
-        { first_name: 'Sebas', last_name: 'Rodriguez', email: 'seb@gmail.com', age: 18,
-          address: 'calle 21' }
-      end
-
       before do
         User.create(first_name: 'Sebas', last_name: 'Rodriguez', email: 'seb@gmail.com', age: 18,
                     address: 'calle 21')
       end
-
       it_behaves_like 'HasValidation'
     end
   end

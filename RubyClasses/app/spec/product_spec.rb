@@ -23,37 +23,25 @@ RSpec.describe Product do
       quantity: 10 }
   end
 
-  describe 'class methods' do
-    describe '#initialize' do
-      it_behaves_like 'initialize_method'
-    end
-
-    describe '#create' do
-      it_behaves_like 'create_method'
-    end
-
-    describe '#count' do
-      it_behaves_like 'count_method'
-    end
-
-    describe '#all' do
-      it_behaves_like 'all_method'
-    end
-
-    describe '#find' do
-      it_behaves_like 'find_method'
-    end
+  let(:with_blank_attributes) do
+    { name: 'TV', brand: 'LG', description: '42 PL', quantity: 8 }
   end
 
+  let(:object_exist) do
+    { name: 'CELLPHONE', value: 500000, brand: 'XIAOMI', description: '32GB',
+      quantity: 10}
+  end
+
+  let(:with_uniq_attributes) do
+    { name: 'CELLPHONE', value: 30000, brand: 'ZOOM', description: 'MP3 LIGHT',
+      quantity: 90}
+  end
+
+  it_behaves_like 'ClassMethods'
+
+  it_behaves_like 'InstanceMethods'
+
   describe 'instance methods' do
-    describe '#save' do
-      it_behaves_like 'save_method'
-    end
-
-    describe '#delete' do
-      it_behaves_like 'delete_method'
-    end
-
     describe '#update' do
       subject(:update) { product.update }
 
@@ -96,24 +84,6 @@ RSpec.describe Product do
     end
 
     describe '#valid?' do
-      let(:correct_attributes) do
-        { name: 'TV', value: 8000000, brand: 'LG', description: '42 PL', quantity: 822 }
-      end
-
-      let(:wrong_attributes) do
-        { name: 'TV', brand: 'LG', description: '42 PL', quantity: 8 }
-      end
-
-      let(:object_exist) do
-        { name: 'CELLPHONE', value: 500000, brand: 'XIAOMI', description: '32GB',
-          quantity: 10}
-      end
-
-      let(:with_uniq_attributes) do
-        { name: 'CELLPHONE', value: 30000, brand: 'ZOOM', description: 'MP3 LIGHT',
-          quantity: 90}
-      end
-
       before do
         Product.create(name: 'CELLPHONE', value: 500000, brand: 'XIAOMI', description: '32GB',
           quantity: 10 )

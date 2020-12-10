@@ -8,7 +8,7 @@ shared_examples_for 'HasValidation' do
   end
 
   context 'without an attribute required' do
-    let(:object) { described_class.new(**wrong_attributes) }
+    let(:object) { described_class.new(**with_blank_attributes) }
 
     it 'expect insert error message into the object' do
       expect { subject }.to change(object, :errors)

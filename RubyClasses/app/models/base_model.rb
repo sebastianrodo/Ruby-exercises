@@ -1,18 +1,22 @@
-class Base
-  @@object = []
+class BaseModel
+  @@resources = []
   @@id_auto_increment = 0
+
+  def initialize
+    @errors = {}
+  end
 
   class << self
     def count
-      @@object.count
+      @@resources.count
     end
 
     def all
-      @@object
+      @@resources
     end
 
     def find(id)
-      @@object.find { |object| object.id == id }.clone
+      @@resources.find { |resource| resource.id == id }.clone
     end
 
     def clear_id
@@ -24,17 +28,17 @@ class Base
     return false unless valid?
 
     if self.class.find(id)
-      @@object[id - 1] = self
+      @@resources[id - 1] = self
     else
       self.id = @@id_auto_increment += 1
-      @@object << self
+      @@resources << self
     end
 
     true
   end
 
   def delete
-    @@object.delete(self)
+    @@resources.delete(self)
   end
 
   def update
@@ -65,11 +69,11 @@ class Base
   end
 
   def validate_uniq?(field)
-    find_exist_object = self.class.find(id)
-    condition = self.class.all.any? { |object| object.send(field) == send(field) }
+    find_exist_resource = self.class.find(id)
+    condition = self.class.all.any? { |resource| resource.send(field) == send(field) }
 
-    if find_exist_object
-      return true if send(field) == find_exist_object.send(field)
+    if find_exist_resource
+      return true if send(field) == find_exist_resource.send(field)
 
       return false unless valid_with_condition?(condition, field, 'has already been taken')
 

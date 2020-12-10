@@ -1,10 +1,10 @@
 require 'pry'
 require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/enumerable'
-require_relative './Base'
+require_relative './base_model'
 #require_relative './concerns/has_validation'
 
-class User < Base
+class User < BaseModel
   #include ::HasValidation
   attr_accessor :id, :first_name, :last_name, :email, :age, :address, :errors
 
@@ -12,12 +12,12 @@ class User < Base
   UNIQ_KEYS = [:email]
 
   def initialize(first_name: nil, last_name: nil, email: nil, age: nil, address: nil)
+    super()
     @first_name = first_name
     @last_name = last_name
     @email = email
     @age = age
     @address = address
-    @errors = {}
   end
 
   class << self
