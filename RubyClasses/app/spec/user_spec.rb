@@ -1,7 +1,5 @@
 require '.././models/user'
-require './shared_examples/valid_spec'
-require './shared_examples/class_methods_spec'
-require './shared_examples/instance_methods_spec'
+require './shared_examples/base_spec'
 
 RSpec.describe User do
   after do
@@ -10,7 +8,7 @@ RSpec.describe User do
   end
 
   let(:correct_attributes) do
-    { first_name: 'Sebas', last_name: 'Rodriguez', email: 'sebas@gmail.com', age: 18,
+    { first_name: 'Sebas', last_name: 'Rodriguez', email: 'seb@gmail.com', age: 18,
       address: 'calle 21' }
   end
 
@@ -39,63 +37,20 @@ RSpec.describe User do
       address: 'calle 21' }
   end
 
-  it_behaves_like 'ClassMethods'
+  let(:changes) { object.address = 'Carrera 102' }
 
-  it_behaves_like 'InstanceMethods'
+  let(:repeted_changes) {
+    object.first_name = 'Silvia'
+    object.email = 'shirlez30@gmail.com'
+  }
+  #The following variable is about the object have not to any update because the email is repeated
+  let(:current_object) { described_class.find(1).first_name && described_class.find(1).email  }
 
-  describe 'instance methods' do
-    describe '#update' do
-      subject(:update) { user.update }
+  let(:changes_with_blank) {
+    object.first_name = ''
+   }
+   #The following variable is about the object have not to any update because the first_name is blank
+   let(:current_object_without_changes) { described_class.find(1).first_name }
 
-      context 'with valid values to update and return true' do
-        let(:attributes) do
-          { first_name: 'Sebas', last_name: 'Rodriguez', email: 'seb@gmail.com', age: 18,
-            address: 'calle 21' }
-        end
-
-        let(:create) { described_class.create(**attributes) }
-
-        let(:user) { User.find(1) }
-
-        before do
-          create
-        end
-
-        it 'expect save the address update' do
-          user.address = 'Carrera 102'
-          expect { subject }.to change { User.find(1).address }
-          expect(subject).to be_truthy
-        end
-      end
-
-      context 'with repeated values, they are not updated and returns false' do
-        let(:user) { User.find(1) }
-
-        before do
-          User.create(first_name: 'Sebas', last_name: 'Rodriguez', email: 'seanrito@gmail.com',
-                      age: 18, address: 'calle 21')
-
-          User.create(first_name: 'Shirlez', last_name: 'Dominguez', email: 'shirlez30@gmail.com',
-                      age: 42, address: 'calle 67')
-        end
-
-        it 'expect not to save the first name update cause email has been taken' do
-          user.first_name = 'Silvia'
-          user.email = 'shirlez30@gmail.com'
-
-          expect { subject }.not_to change { User.find(1).first_name }
-          expect { subject }.not_to change { User.find(1).email }
-          is_expected.to be_falsey
-        end
-      end
-    end
-
-    describe '#valid?' do
-      before do
-        User.create(first_name: 'Sebas', last_name: 'Rodriguez', email: 'seb@gmail.com', age: 18,
-                    address: 'calle 21')
-      end
-      it_behaves_like 'HasValidation'
-    end
-  end
+  it_behaves_like 'BaseModelSpec'
 end

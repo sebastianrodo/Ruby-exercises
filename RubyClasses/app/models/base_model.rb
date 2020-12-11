@@ -37,14 +37,14 @@ class BaseModel
     true
   end
 
-  def delete
-    @@resources.delete(self)
-  end
-
   def update
     return true if save
 
     false
+  end
+
+  def delete
+    @@resources.delete(self)
   end
 
   def valid?

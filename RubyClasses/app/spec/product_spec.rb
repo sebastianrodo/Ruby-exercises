@@ -1,7 +1,5 @@
 require '.././models/product'
-require './shared_examples/valid_spec'
-require './shared_examples/class_methods_spec'
-require './shared_examples/instance_methods_spec'
+require './shared_examples/base_spec'
 
 RSpec.describe Product do
   after do
@@ -28,68 +26,28 @@ RSpec.describe Product do
   end
 
   let(:object_exist) do
-    { name: 'CELLPHONE', value: 500000, brand: 'XIAOMI', description: '32GB',
-      quantity: 10}
+    { name: 'TV', value: 1200000, brand: 'LG', description: '32 PL', quantity: 7 }
   end
 
   let(:with_uniq_attributes) do
-    { name: 'CELLPHONE', value: 30000, brand: 'ZOOM', description: 'MP3 LIGHT',
+    { name: 'TV', value: 30000, brand: 'ZOOM', description: 'MP3 LIGHT',
       quantity: 90}
   end
 
-  it_behaves_like 'ClassMethods'
+  let(:changes) { object.value = 900000 }
 
-  it_behaves_like 'InstanceMethods'
+  let(:repeted_changes) {
+    object.brand = 'MAC'
+    object.name = 'CELLPHONE'
+  }
+  #The following variable is about the object have not to any update because the name is repeated
+  let(:current_object) { described_class.find(1).brand && described_class.find(1).name  }
 
-  describe 'instance methods' do
-    describe '#update' do
-      subject(:update) { product.update }
+  let(:changes_with_blank) {
+    object.value = ''
+   }
+   #The following variable is about the object have not to any update because the balue is blank
+   let(:current_object_without_changes) { described_class.find(1).value }
 
-      context 'with valid values to update and return true' do
-        let(:attributes) do
-          { name: 'TV', value: 1200000, brand: 'LG', description: '32 PL', quantity: 7 }
-        end
-
-        let(:create) { described_class.create(**attributes) }
-
-        let(:product) { Product.find(1) }
-
-        before do
-          create
-        end
-
-        it 'expect save the value update' do
-          product.value = 900000
-          expect { subject }.to change { Product.find(1).value }
-          is_expected.to be_truthy
-        end
-      end
-
-      context 'with blank values, they are not updated and return false' do
-        let(:product) { Product.find(1) }
-
-        before do
-          Product.create(name: 'TV', value: 1200000, brand: 'LG', description: '32 PL', quantity: 7 )
-
-          Product.create(name: 'CELLPHONE', value: 500000, brand: 'XIAOMI', description: '32GB',
-                        quantity: 10 )
-        end
-
-        it 'expect not to save the update cause brand is blank' do
-          product.brand = ''
-          expect { subject }.not_to change { Product.find(1).brand }
-          is_expected.to be_falsey
-        end
-      end
-    end
-
-    describe '#valid?' do
-      before do
-        Product.create(name: 'CELLPHONE', value: 500000, brand: 'XIAOMI', description: '32GB',
-          quantity: 10 )
-      end
-
-      it_behaves_like 'HasValidation'
-    end
-  end
+  it_behaves_like 'BaseModelSpec'
 end
